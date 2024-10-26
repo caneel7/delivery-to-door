@@ -77,12 +77,35 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
             User user = foundUser.get();
 
+            if(!user.getIsVerified()) return ResponseEntityBuilder.badRequest("Please Verify Your Email First");
+
             String token = jwtService.generateToken(userDetailsService.loadUserById(user.getId()));
 
             user.setToken(token);
 
             return ResponseEntityBuilder.success(user,"Logged In Successfully");
 
+        }catch (Exception e){
+            return ResponseEntityBuilder.serverError(e.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse<Boolean>> verifyOTP(UserRequestDto body)
+    {
+        try{
+
+            if(body.getEmail() == null || body.getOtp() == null) return ResponseEntityBuilder.badRequest("Please Provide Email And OTP");
+
+            Optional<User> foundUser = userRepository.findByEmail(body.getEmail());
+
+            if(!foundUser.isPresent()) return ResponseEntityBuilder.notFound("Cannot Find User");
+
+            User user = foundUser.get();
+
+            if(user.getOtp() != body.getOtp()) return ResponseEntityBuilder.badRequest("OTP Mismatch");
+
+            return  ResponseEntityBuilder.success(true,"User Verified Successfully. Proceed To Login");
         }catch (Exception e){
             return ResponseEntityBuilder.serverError(e.getMessage());
         }

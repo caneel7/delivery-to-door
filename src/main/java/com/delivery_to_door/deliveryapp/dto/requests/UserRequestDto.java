@@ -13,5 +13,5 @@ public class UserRequestDto {
     private String mobile;
     private String password;
     private Optional<String> token;
-
+    private String otp;
 }

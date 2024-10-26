@@ -11,4 +11,6 @@ public interface AuthenticationService {
     ResponseEntity<ApiResponse<Boolean>> register(UserRequestDto body);
 
     ResponseEntity<ApiResponse<User>> login(UserRequestDto body);
+
+    ResponseEntity<ApiResponse<Boolean>> verifyOTP(UserRequestDto body);
 }

@@ -43,11 +43,18 @@ public class User implements UserDetails {
     @Column(name = "is_active")
     private int isActive = 1;
 
+    @Column(name = "is_verified")
+    private int isVerified = 0;
+
     //virtual field for token
     @Transient
     private String token;
 
     private User(){};
+
+    public boolean getIsVerified(){
+        return this.isVerified == 1 ? true : false;
+    }
 
     public User(String email, String password) {
         this.email = email;

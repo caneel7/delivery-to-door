@@ -30,4 +30,10 @@ public class AuthenticationController {
         return authenticationService.login(body);
     }
 
+    @PostMapping("verify-otp")
+    public ResponseEntity<ApiResponse<Boolean>> verifyOtp(@RequestBody UserRequestDto body)
+    {
+        return authenticationService.verifyOTP(body);
+    }
+
 }
